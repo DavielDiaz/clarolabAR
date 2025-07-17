@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Detector Multiclase</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="contenedor">
+    <video id="video" autoplay muted playsinline></video>
+    <canvas id="overlay"></canvas>
+    <img id="ar-content" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Red_star.svg/240px-Red_star.svg.png" alt="AR content" />
+
+  </div>
+
+  <div id="mensaje">
+    Objeto detectado: <span id="clase"></span>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="detector_multiclase.js"></script>
+  <script>
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("overlay");
+    const mensaje = document.getElementById("mensaje");
+    const claseSpan = document.getElementById("clase");
+
+    window.iniciarEscaneo(video, canvas);
+
+    setInterval(() => {
+      const estado = window.estadoDeteccion();
+      if (estado.confirmado) {
+        mensaje.style.display = "block";
+        claseSpan.textContent = estado.clase;
+      } else {
+        mensaje.style.display = "none";
+        claseSpan.textContent = "";
+      }
+    }, 300);
+  </script>
+</body>
+</html>
